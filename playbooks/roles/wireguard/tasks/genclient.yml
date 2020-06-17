@@ -8,11 +8,6 @@
     shell: "umask 077; wg genkey | tee {{ wireguard_server_private_key_file }} | wg pubkey > {{ wireguard_server_public_key_file }}"
     args:
       creates: "{{ wireguard_server_public_key_file }}"
-  
-  - debug:
-      msg: "{{ wireguard_server_private_key_file }}"
-  - debug:
-      msg: "{{ wireguard_server_public_key_file }}" 
 
   - name: Register the server key file contents
     command: cat {{ item }}
@@ -50,6 +45,9 @@
    
     register: wireguard_client_pubkeys
     changed_when: False
+   
+  - debug:
+      msg: "{{ wireguard_client_pubkeys.stdout }}" 
 
   - name: Register client private keys
     command: cat client.key
@@ -76,6 +74,7 @@
     # - "{{ vpn_client_names.results }}"
     # - "{{ wireguard_client_privkeys.results }}"
     
+
   - name: Generate the server configuration
     template:
       src: "server.conf.j2"
