@@ -3,7 +3,7 @@
   tasks:
   - name: Create a directory for each client
     file:
-      path: "/etc/wireguard/{{ clientName }}"
+      path: "/etc/wireguard/clients/{{ clientName }}"
       state: directory
       owner: root
       group: root
@@ -13,14 +13,14 @@
   - name: Generate private and public key for each client
     shell: "umask 077; wg genkey | tee client.key | wg pubkey > client.pub"
     args:
-      chdir: "/etc/wireguard/{{ clientName }}"
+      chdir: "/etc/wireguard/clients/{{ clientName }}"
       creates: client.key
    
 
   - name: Register client public keys
     command: cat client.pub
     args:
-      chdir: "/etc/wireguard/{{ clientName }}"
+      chdir: "/etc/wireguard/clients/{{ clientName }}"
    
     register: wireguard_client_pubkeys
     changed_when: False
@@ -28,7 +28,7 @@
   - name: Register client private keys
     command: cat client.key
     args:
-      chdir: "/etc/wireguard/{{ clientName }}"
+      chdir: "/etc/wireguard/clients/{{ clientName }}"
     
     register: wireguard_client_privkeys
     changed_when: False
@@ -36,13 +36,13 @@
   - name: Generate the client configuration profiles
     template:
       src: client.conf.j2
-      dest: "/etc/wireguard/{{ clientName }}/client.conf"
+      dest: "/etc/wireguard/clients/{{ clientName }}/client.conf"
   
 
   - name: Generate OpenWrt configuration fragments
     template:
       src: client-openwrt.txt.j2
-      dest: "/etc/wireguard/{{ clientName }}/client-openwrt.txt"
+      dest: "/etc/wireguard/clients/{{ clientName }}/client-openwrt.txt"
     
   - service:
       name: dnsmasq
