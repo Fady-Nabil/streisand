@@ -1,0 +1,10 @@
+# "{{ clientName }}" - Streisand WireGuard Client Profile
+[Interface]
+Address = 10.192.122.{{ instance }}/32
+DNS = 10.192.122.1
+PrivateKey = {{ client_private_key }}
+
+[Peer]
+PublicKey = {{ server_public_key }}
+AllowedIPs = 0.0.0.0/0,::/0
+Endpoint = {{ server_ip }}:51820
