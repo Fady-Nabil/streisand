@@ -76,14 +76,14 @@ if ! uci get "network.$ifname" >/dev/null 2>&1; then
 set network.$ifname=interface
 
 set network.$ifname.proto='wireguard'
-set network.$ifname.private_key='{{ privatekey }}'
+set network.$ifname.private_key='{{ wireguard_client_privkeys.stdout }}'
 set network.$ifname.addresses='10.192.122.{{ instance }}/32'
 set network.$ifname.listen_port='51820'
 
 # The remote peer, i.e., the Streisand server
 add network wireguard_$ifname
 
-set network.@wireguard_$ifname[-1].public_key='{{ server_public_key }}'
+set network.@wireguard_$ifname[-1].public_key='{{ wireguard_server_public_key }}'
 set network.@wireguard_$ifname[-1].endpoint_host='13.71.64.135'
 set network.@wireguard_$ifname[-1].endpoint_port='51820 '
 
