@@ -1,6 +1,27 @@
 ---
 - hosts: localhost
+  vars:
+    wireguard_server_private_key_file: "/etc/wireguard/privatekey"  
+    wireguard_server_public_key_file:  "/etc/wireguard/publickey" 
   tasks:
+  - name: Generate private and public key for the server
+    shell: "umask 077; wg genkey | tee {{ wireguard_server_private_key_file }} | wg pubkey > {{ wireguard_server_public_key_file }}"
+    args:
+      creates: "{{ wireguard_server_public_key_file }}"
+  
+  - debug:
+      msg: "{{ wireguard_server_private_key_file }}"
+  - debug:
+      msg: "{{ wireguard_server_public_key_file }}" 
+
+  - name: Register the server key file contents
+    command: cat {{ item }}
+    register: wireguard_server_key_files
+    changed_when: False
+    with_items:
+      - "{{ wireguard_server_private_key_file }}"
+      - "{{ wireguard_server_public_key_file }}"
+
   - name: Create a directory for each client
     file:
       path: "/etc/wireguard/clients/{{ clientName }}"
@@ -8,6 +29,11 @@
       owner: root
       group: root
       mode: 0600
+
+  - name: Set the server key material facts
+    set_fact:
+      wireguard_server_private_key: "{{ wireguard_server_key_files.results[0].stdout }}"
+      wireguard_server_public_key:  "{{ wireguard_server_key_files.results[1].stdout }}"
 
 
   - name: Generate private and public key for each client

@@ -3,6 +3,13 @@
 # Set up the PPA and install packages
 - import_tasks: install.yml
 
+wireguard_server_private_key_file: "/etc/wireguard/privatekey"
+wireguard_server_public_key_file:  "/etc/wireguard/publickey"
+
+- name: test
+  debug:
+    msg: "{{wireguard_server_public_key}}"
+
 - name: Generate private and public key for the server
   shell: "umask 077; wg genkey | tee {{ wireguard_server_private_key_file }} | wg pubkey > {{ wireguard_server_public_key_file }}"
   args:

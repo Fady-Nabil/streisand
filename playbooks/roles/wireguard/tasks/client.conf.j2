@@ -5,6 +5,6 @@ DNS = 10.192.122.1
 PrivateKey = {{ wireguard_client_privkeys.stdout }}
 
 [Peer]
-PublicKey = {{ server_public_key }}
+PublicKey = {{ wireguard_server_public_key }}
 AllowedIPs = 0.0.0.0/0,::/0
 Endpoint = {{ server_ip }}:51820
