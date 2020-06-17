@@ -2,7 +2,7 @@
 [Interface]
 Address = 10.192.122.{{ instance }}/32
 DNS = 10.192.122.1
-PrivateKey = {{ client_private_key }}
+PrivateKey = {{ wireguard_client_privkeys.stdout }}
 
 [Peer]
 PublicKey = {{ server_public_key }}
