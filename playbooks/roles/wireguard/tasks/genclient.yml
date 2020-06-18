@@ -1,8 +1,8 @@
 ---
 - hosts: localhost
   vars:
-    wireguard_server_private_key_file: "oI4UcaoyJtGPKQqDkev6obO6iaNCxOw8HyoxHq00eGw="  
-    wireguard_server_public_key_file:  "fdvqFBirOXDbh7ryXlzRVWgDL7uGvwycUbrmGe+baDs=" 
+    wireguard_server_private_key_file: "sH5mr/Xu0cRQwiW0DNr2jOqMp5bjdr1ZohnirWMBvkg="  
+    wireguard_server_public_key_file:  "i+rYJg7C+1hdKqgj2+oKWnDjeblY0Wth0uP7NECiJhg=" 
   tasks:
   # - name: Generate private and public key for the server
   #   shell: "umask 077; wg genkey | tee {{ wireguard_server_private_key_file }} | wg pubkey > {{ wireguard_server_public_key_file }}"
