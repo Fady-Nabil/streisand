@@ -84,7 +84,7 @@ set network.$ifname.listen_port='51820'
 # The remote peer, i.e., the Streisand server
 add network wireguard_$ifname
 
-set network.@wireguard_$ifname[-1].public_key='{{ wireguard_server_public_key }}'
+set network.@wireguard_$ifname[-1].public_key='{{ wireguard_server_public_key_file }}'
 set network.@wireguard_$ifname[-1].endpoint_host='13.71.64.135'
 set network.@wireguard_$ifname[-1].endpoint_port='51820 '
 
