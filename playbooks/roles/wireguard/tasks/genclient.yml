@@ -3,6 +3,10 @@
   vars:
     wireguard_server_private_key_file: "sH5mr/Xu0cRQwiW0DNr2jOqMp5bjdr1ZohnirWMBvkg="  
     wireguard_server_public_key_file:  "i+rYJg7C+1hdKqgj2+oKWnDjeblY0Wth0uP7NECiJhg=" 
+    wireguard_firewall_rules:
+        - "iptables --wait 120 -A FORWARD -s 10.192.122.0/24 -j ACCEPT"
+        - "iptables --wait 120 -t nat -A POSTROUTING -s 10.192.122.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE"
+
   tasks:
   # - name: Generate private and public key for the server
   #   shell: "umask 077; wg genkey | tee {{ wireguard_server_private_key_file }} | wg pubkey > {{ wireguard_server_public_key_file }}"
@@ -89,7 +93,7 @@
       state: touch
 
   # # Set up the WireGuard firewall rules
-  # - import_tasks: firewall.yml
+  - import_tasks: firewall.yml
 
   - name: Enable the WireGuard service so it starts at boot, and bring up the WireGuard network interface
     systemd:
