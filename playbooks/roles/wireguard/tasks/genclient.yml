@@ -77,13 +77,5 @@
     # with_together:
     # - "{{ vpn_client_names.results }}"
     # - "{{ wireguard_client_privkeys.results }}"
-    
-
-  - name: Generate the server configuration
-    template:
-      src: "server.conf.j2"
-      dest: "/etc/wireguard/wg0.conf"
-      owner: root
-      group: root
-      mode: 0600
+  
 
