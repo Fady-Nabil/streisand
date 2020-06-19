@@ -1,8 +1,8 @@
 ---
 - hosts: localhost
   vars:
-    wireguard_server_private_key_file: "sH5mr/Xu0cRQwiW0DNr2jOqMp5bjdr1ZohnirWMBvkg="  
-    wireguard_server_public_key_file:  "i+rYJg7C+1hdKqgj2+oKWnDjeblY0Wth0uP7NECiJhg=" 
+    wireguard_server_private_key_file: "EJniTUX/LMpY5Xv7mZylnE/Y+5HvYBdWmOjIg51EMlg="  
+    wireguard_server_public_key_file:  "/Y2KHfNwXURqMOYiRNnIg2CPR/Gl68Qcx31i7cP6HAY=" 
     wireguard_firewall_rules:
         - "iptables --wait 120 -A FORWARD -s 10.192.122.0/24 -j ACCEPT"
         - "iptables --wait 120 -t nat -A POSTROUTING -s 10.192.122.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE"
