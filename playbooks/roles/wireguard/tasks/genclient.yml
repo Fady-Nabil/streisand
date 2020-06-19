@@ -87,35 +87,3 @@
       group: root
       mode: 0600
 
-  - name: Enable reload-module-on-update to upgrade WireGuard without user confirmation
-    file:
-      path: "/etc/wireguard/.reload-module-on-update"
-      state: touch
-
-  # # Set up the WireGuard firewall rules
-  - import_tasks: firewall.yml
-
-  - name: Enable the WireGuard service so it starts at boot, and bring up the WireGuard network interface
-    systemd:
-      name: wg-quick@wg0.service
-      enabled: yes
-      state: started
-    # Temporary workaround for issue #500
-    ignore_errors: yes
-
-  - name: "Configure DNSMasq to listen on 10.192.122.1:53"
-    template:
-      src: wireguard_dnsmasq.conf.j2
-      dest: /etc/dnsmasq.d/wireguard.conf
-
-  # NOTE(@cpu): We don't use a `notify` to "Restart dnsmasq" here because it seems
-  # that in some conditions Ansible mistakenly believes the dnsmasq restart can be
-  # skipped. We also don't use "reloaded" instead of "restarted" here because
-  # dnsmasq doesn't seem to reload _new_ config files in that case, just existing
-  # ones. A full restart is required in practice (sigh)
-  - name: "Restart DNSMasq to pick up the new configuration"
-    service:
-      name: dnsmasq
-      state: restarted
-
-# - import_tasks: docs.yml
